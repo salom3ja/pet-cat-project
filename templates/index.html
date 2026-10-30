@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Лента питомцев</title>
+    <style>
+        body {
+            background: #1a1a1a;
+            color: #f0e6d2;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 50px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #ffb6c1;
+            text-align: center;
+        }
+        .pet-card {
+            background: #2a2a2a;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #ffb6c1;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .pet-card img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px;
+            display: block;
+            margin: 0 auto 15px;
+            object-fit: cover;
+        }
+        .pet-name {
+            color: #ffb6c1;
+            font-size: 24px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .pet-breed {
+            color: #aaa;
+            font-style: italic;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .pet-description {
+            line-height: 1.6;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>🐾 Лента питомцев</h1>
+    
+    {% for pet in pets %}
+    <div class="pet-card">
+        <!-- Вот здесь мы берем картинку из папки static -->
+        <img src="{{ url_for('static', filename=pet.image_url) }}" alt="{{ pet.name }}">
+        <h2 class="pet-name">{{ pet.name }}</h2>
+        <p class="pet-breed">{{ pet.breed }}</p>
+        <p class="pet-description">{{ pet.description }}</p>
+    </div>
+    {% endfor %}
+    <!-- Форма добавления питомца -->
+    <div style="margin-top: 60px; border-top: 2px solid #ffb6c1; padding-top: 30px;">
+        <h2 style="color: #ffb6c1; text-align: center;">Добавить своего питомца 🐾</h2>
+        
+        <!-- enctype="multipart/form-data" ОБЯЗАТЕЛЕН для передачи файлов! -->
+        <form action="/add" method="POST" enctype="multipart/form-data" style="max-width: 400px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px;">
+            
+            <input type="text" name="name" placeholder="Имя питомца (например: Мурка)" required 
+                   style="padding: 12px; border-radius: 8px; border: 1px solid #444; background: #2a2a2a; color: #f0e6d2; font-size: 16px;">
+            
+            <input type="text" name="breed" placeholder="Порода / Вид (например: Кот, британец)" required 
+                   style="padding: 12px; border-radius: 8px; border: 1px solid #444; background: #2a2a2a; color: #f0e6d2; font-size: 16px;">
+            
+            <textarea name="description" placeholder="Краткое описание (например: любит спать на клавиатуре)" required 
+                      style="padding: 12px; border-radius: 8px; border: 1px solid #444; background: #2a2a2a; color: #f0e6d2; font-size: 16px; height: 80px; resize: vertical;"></textarea>
+            
+            <label style="color: #aaa; font-size: 14px; text-align: center;">Загрузить фото:</label>
+            <input type="file" name="photo" accept="image/*" required 
+                   style="padding: 10px; border-radius: 8px; border: 1px dashed #ffb6c1; background: #2a2a2a; color: #f0e6d2; cursor: pointer;">
+            
+            <button type="submit" 
+                    style="padding: 14px; border-radius: 8px; border: none; background: #ffb6c1; color: #1a1a1a; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 10px;">
+                Опубликовать в ленту ✨
+            </button>
+        </form>
+    </div>
+</body>
+</html>
